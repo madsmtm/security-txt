@@ -1,2 +1,3 @@
-# security.txt
-A security.txt parser for Rust - Draft 09
+# security-txt
+
+A security.txt draft 09 parser for Rust
