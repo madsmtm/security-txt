@@ -5,3 +5,6 @@ authors = ["Mads Marquart <madsmtm@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+url = "2.1"
+chrono = "0.4"
+language-tags = "0.2"
