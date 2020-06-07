@@ -1,0 +1,5 @@
+Contact: https://hackerone.com/github
+Acknowledgments: https://bounty.github.com/bounty-hunters.html
+Preferred-Languages: en
+Canonical: https://github.com/.well-known/security.txt
+Policy: https://bounty.github.com
