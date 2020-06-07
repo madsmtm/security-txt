@@ -8,7 +8,7 @@ use std::fmt;
 use url::Url;
 
 /// The path under which security.txt MUST be placed, when served over HTTP
-pub const WELL_KNOWN_PATH: &'static str = "/.well-known/security.txt";
+pub const WELL_KNOWN_PATH: &str = "/.well-known/security.txt";
 
 #[derive(Debug, PartialEq)]
 pub enum Field {
@@ -23,7 +23,7 @@ pub enum Field {
     Extension(String, String),
 }
 
-fn split_at_str<'a>(string: &'a str, pattern: char) -> Option<(&'a str, &'a str)> {
+fn split_at_str(string: &str, pattern: char) -> Option<(&str, &str)> {
     let mut split = string.splitn(2, pattern);
     let first = split.next().unwrap();
     match split.next() {
@@ -51,7 +51,7 @@ impl FromStr for Field {
                 "policy" => Self::Policy(Url::parse(value)?),
                 "preferred-languages" => {
                     let languages = value
-                        .split(",")
+                        .split(',')
                         .map(|s| LanguageTag::from_str(s))
                         .collect::<Result<_, _>>()?;
                     Self::PreferredLanguages(languages)
