@@ -7,8 +7,14 @@ use std::error::Error;
 use std::fmt;
 use url::Url;
 
+/// The conventional name of the file.
+pub const FILENAME: &str = "security.txt";
+
 /// The path under which security.txt MUST be placed, when served over HTTP
 pub const WELL_KNOWN_PATH: &str = "/.well-known/security.txt";
+
+/// The required file format of the "security.txt" file (MUST be plain text).
+pub const MIMETYPE: &str = "text/plain";
 
 #[derive(Debug, PartialEq)]
 pub enum Field {
