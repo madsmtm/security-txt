@@ -1,9 +1,8 @@
 use std::fs;
 use std::io;
 use std::path::Path;
-use std::str::FromStr;
 
-use security_txt::Line;
+use security_txt;
 
 #[test]
 fn parse() -> io::Result<()> {
@@ -13,15 +12,22 @@ fn parse() -> io::Result<()> {
         let file = entry?.path();
         let data = fs::read_to_string(&file)?;
 
-        for (i, line) in data.lines().enumerate() {
-            if let Err(e) = Line::from_str(line) {
+        for (i, field) in security_txt::parse_fields(&data).enumerate() {
+            if let Err(e) = field {
                 haserror = true;
-                println!("Errored in {}, line {}: {}", file.display(), i, e);
+                println!("Errored in {}, #{}: {}", file.display(), i, e);
             }
         }
+
+        if let Err(e) = security_txt::parse(&data) {
+            haserror = true;
+            println!("Failed parsing file {}: {}", file.display(), e);
+        }
     }
+
     if haserror {
         panic!("Errored");
     }
+
     Ok(())
 }
