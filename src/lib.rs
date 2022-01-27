@@ -62,10 +62,10 @@ impl FromStr for Field {
                         .collect::<Result<_, _>>()?;
                     Self::PreferredLanguages(languages)
                 }
-                _ => Self::Extension("Abc".into(), "def".into()),
+                _ => Self::Extension(name.into(), value.into()),
             });
         }
-        Err(ParseError("Missing required fields".into()))
+        Err(ParseError("Missing `:`".into()))
     }
 }
 
@@ -75,7 +75,7 @@ pub struct ParseError(String);
 
 impl fmt::Display for ParseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Oh no, something bad went down")
+        write!(f, "{}", self.0)
     }
 }
 
@@ -99,9 +99,20 @@ impl From<chrono::format::ParseError> for ParseError {
     }
 }
 
-pub enum SecurityTxt {
-    Unsigned(Vec<Field>),
-    Signed(String, Vec<Field>, String),
+pub enum Line {
+    Field(Field),
+    Comment(String),
+}
+
+impl FromStr for Line {
+    type Err = ParseError;
+    fn from_str(string: &str) -> Result<Self, Self::Err> {
+        if let Some(string) = string.strip_prefix("#") {
+            Ok(Self::Comment(string.into()))
+        } else {
+            Ok(Self::Field(Field::from_str(string)?))
+        }
+    }
 }
 
 #[cfg(test)]
